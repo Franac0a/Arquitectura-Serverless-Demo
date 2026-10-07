@@ -9,12 +9,12 @@ Deno.serve(async (req) => {
 
   if (record.stock < record.stock_minimo) {
     console.log(
-      `🚨 ALERTA CRÍTICA: ${record.nombre} (ID: ${record.id}) cayó a ${record.stock} unidades.`,
+      `ALERTA CRÍTICA: ${record.nombre} (ID: ${record.id}) cayó a ${record.stock} unidades.`,
     );
     // Aquí podrías agregar un fetch() para enviar un mensaje a Discord, Slack o Email.
   } else {
     console.log(
-      `✅ Stock estable para ${record.nombre}: ${record.stock} unidades.`,
+      `Stock estable para ${record.nombre}: ${record.stock} unidades.`,
     );
   }
 
