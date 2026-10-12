@@ -16,6 +16,13 @@ Deno.serve(async (req) => {
   try {
     const { producto_id, cantidad_cambio } = await req.json();
 
+    if (typeof producto_id !== "string" || !Number.isInteger(cantidad_cambio)) {
+      return new Response(JSON.stringify({ error: "Datos inválidos" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -38,6 +45,13 @@ Deno.serve(async (req) => {
     }
 
     const nuevo_stock = prod.stock + cantidad_cambio;
+
+    if (nuevo_stock < 0) {
+      return new Response(JSON.stringify({ error: "Stock insuficiente" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const { data: updatedProd, error: updateError } = await supabase
       .from("productos")
